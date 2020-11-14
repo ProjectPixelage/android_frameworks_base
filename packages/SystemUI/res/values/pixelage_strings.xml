@@ -102,4 +102,8 @@
     <!-- Name of the firewall status bar icon. -->
     <string name="status_bar_firewall">Firewall</string>
     <string name="status_bar_firewall_slot" translatable="false">firewall</string>
+
+    <!-- Screen record -->
+     <string name="screenrecord_lowquality_label">Lower quality</string>
+     <string name="screenrecord_lowquality_summary">For smaller file size</string>
 </resources>
