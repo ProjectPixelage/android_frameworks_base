@@ -114,6 +114,11 @@
         android:title="@string/status_bar_nfc"
         android:icon="@drawable/ic_statusbar_nfc" />
 
+    <com.android.systemui.tuner.StatusBarSwitch
+        android:key="roaming"
+        android:title="@string/status_bar_roaming"
+        android:icon="@drawable/ic_statusbar_roaming" />
+
     <com.android.systemui.tuner.BatteryPreference
         android:title="@string/battery"
         android:icon="@*android:drawable/ic_battery"
