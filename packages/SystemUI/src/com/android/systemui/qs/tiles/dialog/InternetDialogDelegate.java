@@ -338,6 +338,7 @@ public class InternetDialogDelegate implements
         }
         mMobileNetworkLayout.setOnClickListener(null);
         mMobileNetworkLayout.setOnLongClickListener(null);
+        mMobileDataToggle.setOnClickListener(null);
         mHotspotLayout.setOnLongClickListener(null);
         mHotspotToggle.setOnCheckedChangeListener(null);
         mConnectedWifListLayout.setOnClickListener(null);
