@@ -72,15 +72,10 @@ public class AconfigFlags {
                 (Process.myUid() == Process.SYSTEM_UID) ? DeviceProtos.parsedFlagsProtoPaths()
                         : Arrays.asList(DeviceProtos.PATHS);
         for (String fileName : defaultFlagProtoFiles) {
-            File f = new File(fileName);
-            if (f.isFile() && f.canRead()) {
-                try (FileInputStream inputStream = new FileInputStream(fileName)) {
-                    loadAconfigDefaultValues(inputStream.readAllBytes());
-                } catch (IOException e) {
-                    Slog.e(LOG_TAG, "Failed to read Aconfig values from " + fileName, e);
-                }
-            } else {
-                Slog.w(LOG_TAG, "No Aconfig flags at " + fileName);
+            try (var inputStream = new FileInputStream(fileName)) {
+                loadAconfigDefaultValues(inputStream.readAllBytes());
+            } catch (IOException e) {
+                Slog.e(LOG_TAG, "Failed to read Aconfig values from " + fileName, e);
             }
         }
         if (Process.myUid() == Process.SYSTEM_UID) {
