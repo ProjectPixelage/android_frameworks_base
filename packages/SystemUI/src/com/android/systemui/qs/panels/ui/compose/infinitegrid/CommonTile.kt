@@ -262,14 +262,14 @@ fun SmallTileContent(
 }
 
 object CommonTileDefaults {
-    val IconSize = 20.dp
-    val LargeTileIconSize = 20.dp
+    val IconSize = 24.dp
+    val LargeTileIconSize = 24.dp
     val SideIconWidth = 32.dp
     val SideIconHeight = 20.dp
     val ToggleTargetSize = 20.dp
     val TileHeight = 69.dp
-    val TilePadding = 16.dp
-    val TileArrangementPadding = 14.dp
+    val TilePadding = 10.dp
+    val TileArrangementPadding = 8.dp
     val InactiveCornerRadius = 100.dp
 
     @Composable fun longPressLabel() = stringResource(id = R.string.accessibility_long_click_tile)
