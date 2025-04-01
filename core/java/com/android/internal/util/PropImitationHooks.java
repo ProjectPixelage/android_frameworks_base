@@ -91,6 +91,7 @@ public class PropImitationHooks {
     private static final String PROP_FIRST_API_LEVEL = "persist.sys.pihooks.first_api_level";
 
     private static final String SPOOF_PIHOOKS_PI = "persist.sys.pihooks.pi";
+    private static final String SPOOF_PIHOOKS_FINSKY = "persist.sys.pihooks.finsky";
 
     private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
             "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
@@ -250,6 +251,12 @@ public class PropImitationHooks {
                 if (!sStockFp.isEmpty()) {
                     dlog("Setting stock fingerprint for: " + packageName);
                     setPropValue("FINGERPRINT", sStockFp);;
+                }
+                return;
+            case PACKAGE_FINSKY:
+                if (SystemProperties.getBoolean(SPOOF_PIHOOKS_FINSKY, true)) {
+                    dlog("Setting Pixel 9 XL's fingerprint for: " + packageName + " process: " + processName);
+                    setPropValue("FINGERPRINT", sPixelNineXLProps.get("FINGERPRINT"));
                 }
                 return;
         }
