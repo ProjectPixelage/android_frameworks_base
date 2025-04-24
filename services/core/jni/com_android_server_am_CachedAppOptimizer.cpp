@@ -335,7 +335,7 @@ static int getAnonPageAdvice(const Vma& vma) {
     bool hasReadFlag = (vma.flags & PROT_READ) > 0;
     bool hasWriteFlag = (vma.flags & PROT_WRITE) > 0;
     bool hasExecuteFlag = (vma.flags & PROT_EXEC) > 0;
-    if ((hasReadFlag || hasWriteFlag) && !hasExecuteFlag && !vma.is_shared) {
+    if ((hasReadFlag || hasWriteFlag) && !hasExecuteFlag) {
         return MADV_PAGEOUT;
     }
     return -1;
