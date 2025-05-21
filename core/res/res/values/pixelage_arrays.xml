@@ -92,4 +92,9 @@
         <item>@string/accessibility_quick_settings_live_display_changed_night</item>
         <item>@string/accessibility_quick_settings_live_display_changed_outdoor</item>
     </string-array>
+
+    <!-- Whitelist of package names to bypass broadcast reciever validation -->
+    <string-array name="config_broadcaseReceiverValidationBypassPackages" translatable="false">
+        <item>com.android.vending</item>
+    </string-array>
 </resources>

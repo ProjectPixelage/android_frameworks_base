@@ -106,6 +106,7 @@ import android.util.proto.ProtoOutputStream;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.internal.util.PropImitationHooks;
 import com.android.server.IntentResolver;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.LocalServices;
@@ -451,7 +452,8 @@ class BroadcastController {
             if (receiver == null && !explicitExportStateDefined) {
                 // sticky broadcast, no flag specified (flag isn't required)
                 flags |= Context.RECEIVER_EXPORTED;
-            } else if (requireExplicitFlagForDynamicReceivers && !explicitExportStateDefined) {
+            } else if (requireExplicitFlagForDynamicReceivers && !explicitExportStateDefined
+                    && !PropImitationHooks.shouldBypassBroadcastReceiverValidation(callerPackage)) {
                 throw new SecurityException(
                         callerPackage + ": One of RECEIVER_EXPORTED or "
                                 + "RECEIVER_NOT_EXPORTED should be specified when a receiver "

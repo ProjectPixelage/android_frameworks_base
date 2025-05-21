@@ -91,6 +91,7 @@ public class PropImitationHooks {
     private static final String PROP_FIRST_API_LEVEL = "persist.sys.pihooks.first_api_level";
 
     private static final String SPOOF_PIHOOKS_PI = "persist.sys.pihooks.pi";
+    private static final String SPOOF_VENDING_SDK = "persist.sys.pihooks.vending";
 
     private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
             "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
@@ -126,6 +127,11 @@ public class PropImitationHooks {
             "MODEL", "Pixel XL",
             "ID", "QP1A.191005.007.A3",
             "FINGERPRINT", "google/marlin/marlin:10/QP1A.191005.007.A3/5972272:user/release-keys"
+    );
+
+    private static final Map<String, String> sVendingSpoofProps =  Map.of(
+            "VERSION.SDK_INT", "32",
+            "VERSION.RELEASE", "12"
     );
 
     private static final Set<String> sNexusFeatures = Set.of(
@@ -193,6 +199,11 @@ public class PropImitationHooks {
         sIsGms = packageName.equals(PACKAGE_GMS) && processName.equals(PROCESS_GMS_UNSTABLE);
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
         sIsPhotos = packageName.equals(PACKAGE_GPHOTOS);
+
+        if (sIsFinsky && SystemProperties.getBoolean(SPOOF_VENDING_SDK, false)) {
+            dlog("Spoofing SDK version for " + packageName);
+            setProps(sVendingSpoofProps);
+        }
 
         /* Set certified properties for GMSCore
          * Set stock fingerprint for ARCore
@@ -382,6 +393,12 @@ public class PropImitationHooks {
         return false;
     }
 
+    private static String[] getStringArrayResSafely(int resId) {
+        String[] strArr = Resources.getSystem().getStringArray(resId);
+        if (strArr == null) strArr = new String[0];
+        return strArr;
+    }
+
     public static boolean shouldBypassTaskPermission(Context context) {
         // GMS doesn't have MANAGE_ACTIVITY_TASKS permission
         final int callingUid = Binder.getCallingUid();
@@ -394,6 +411,22 @@ public class PropImitationHooks {
             return false;
         }
         return gmsUid == callingUid;
+    }
+
+    // Whitelist of package names to bypass broadcast reciever validation
+    public static boolean shouldBypassBroadcastReceiverValidation(String packageName) {
+        // Check if the app is whitelisted
+        if (Arrays.asList(
+                        getStringArrayResSafely(
+                                R.array.config_broadcaseReceiverValidationBypassPackages))
+                .contains(packageName)) {
+            dlog(
+                    "shouldBypassBroadcastReceiverValidation: "
+                            + "Bypassing broadcast receiver validation for whitelisted app: "
+                            + packageName);
+            return true;
+        }
+        return false;
     }
 
     private static boolean isCallerSafetyNet() {
