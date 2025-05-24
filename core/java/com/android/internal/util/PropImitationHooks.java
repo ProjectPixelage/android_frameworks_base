@@ -87,6 +87,7 @@ public class PropImitationHooks {
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
     private static final String PROCESS_GMS_UPDATE = PACKAGE_GMS + ".update";
 
+    private static final String PROP_HOOKS = "persist.sys.pihooks_";
     private static final String PROP_SECURITY_PATCH = "persist.sys.pihooks.security_patch";
     private static final String PROP_FIRST_API_LEVEL = "persist.sys.pihooks.first_api_level";
 
@@ -253,6 +254,7 @@ public class PropImitationHooks {
                 }
                 return;
         }
+        spoofAttestationToLegacy();
     }
 
     private static void setProps(Map<String, String> props) {
@@ -408,6 +410,17 @@ public class PropImitationHooks {
         if (isCallerSafetyNet() || sIsFinsky) {
             dlog("Blocked key attestation sIsGms=" + sIsGms + " sIsFinsky=" + sIsFinsky);
             throw new UnsupportedOperationException();
+        }
+    }
+
+    private static void spoofAttestationToLegacy() {
+        if (!SystemProperties.getBoolean(SPOOF_PIHOOKS_PI, true))
+            return;
+        if (sIsGms || sIsFinsky) {
+            String phReleaseInt = SystemProperties.get(PROP_HOOKS + "RELEASE", "12");
+            String phSdk = SystemProperties.get(PROP_HOOKS + "SDK_INT", "32");
+            setPropValue("RELEASE", phReleaseInt);
+            setPropValue("SDK_INT", phSdk);
         }
     }
 
